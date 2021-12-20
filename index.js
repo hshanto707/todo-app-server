@@ -19,6 +19,22 @@ async function run() {
     await client.connect();
     const database = client.db('todo-app');
     const notesCollection = database.collection('notes');
+
+    // GET NOTES
+
+    app.get('/notes', async (req, res) => {
+      const notes = notesCollection.find({});
+      const result = await notes.toArray();
+      res.send(result)
+    });
+
+    // ADD DATA TO CART
+
+    app.post('/notes', async (req, res) => {
+      const notes = req.body;
+      const result = await notesCollection.insertOne(notes);
+      res.json(result);
+    })
   }
   finally {
     // await client.close()
